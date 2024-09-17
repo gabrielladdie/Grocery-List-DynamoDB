@@ -1,4 +1,4 @@
-const {createItem, getItem, updateItem, deleteItem} = require('./groceryDAO');
+const {createItem, getItem, updateItem, deleteItem, getAll} = require('./groceryDAO');
 
 let key = {
     itemName: 'Apples'
@@ -24,3 +24,5 @@ addItem("Bananas", 5, 1.5, false);
 updateItem("Oranges", 15, 3.5, true);
 
 deleteItem("Bananas");
+
+getAll();

@@ -4,7 +4,8 @@ const {
     GetCommand,
     PutCommand,
     UpdateCommand,
-    DeleteCommand
+    DeleteCommand,
+    ScanCommand
 } = require('@aws-sdk/lib-dynamodb')
 
 const client = new DynamoDBClient({ region: 'us-east-1' })
@@ -54,12 +55,13 @@ async function updateItem(itemName, quantity, price, purchased){
             ":quantity": quantity,
             ":price": price,
             ":purchased": purchased
-        }
+        },
+        ReturnValues: "ALL_NEW"
     })
 
     try{
         const response = await documentClient.send(command)
-        console.log(response)
+        console.log(response);
     } catch (err) {
         console.log(err)
     }
@@ -79,9 +81,24 @@ async function deleteItem(itemName){
     }
 }
 
+// GET ALL
+async function getAll(){
+    const command = new ScanCommand({
+        TableName: 'groceryList'
+    })
+    try{
+        const response = await documentClient.send(command)
+        console.log(response)
+        return response.Items;
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 module.exports = { 
     createItem,
     getItem,
     updateItem,
-    deleteItem
+    deleteItem,
+    getAll
 }
