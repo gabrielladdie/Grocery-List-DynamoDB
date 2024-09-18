@@ -71,11 +71,13 @@ async function updateItem(itemName, quantity, price, purchased){
 async function deleteItem(itemName){
     const command = new DeleteCommand({
         TableName,
-        Key: {itemName}
+        Key: {itemName},
+        ReturnValues: 'ALL_OLD'
     })
     try{
         const response = await documentClient.send(command)
-        console.log(response)
+        console.log(response);
+        return result.Attributes;
     } catch (err) {
         console.log(err)
     }

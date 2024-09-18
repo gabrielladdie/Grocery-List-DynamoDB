@@ -18,23 +18,20 @@ const server = http.createServer(async (req, res) => {
 
         try {
             if (pathname.startsWith('/items')) {
-                const pathParts = pathname.split('/');
-                const itemName = pathParts[2];
-
-                if (method === 'GET' && !itemName) {
+                if (method === 'GET') {
                     responseBody = await groceryDAO.getAll();
                     if (!responseBody) {
                         statusCode = 404;
                         responseBody = { message: 'Item not found' };
                     }
-                } else if (method === 'POST' && !itemName) {
+                } else if (method === 'POST') {
                     const newItem = JSON.parse(body);
                     responseBody = await groceryDAO.createItem(newItem);
                     statusCode = 201;
                 }
             } else if (pathname.startsWith('/items/')) {
                 const itemName = pathname.split('/')[2];
-                if (method === 'PUT' && itemName) {
+                if (method === 'PUT') {
                     const updatedItem = JSON.parse(body);
                     updatedItem.itemName = itemName;
                     responseBody = await groceryDAO.updateItem(updatedItem);
@@ -42,7 +39,7 @@ const server = http.createServer(async (req, res) => {
                         statusCode = 404;
                         responseBody = { message: 'Item not found' };
                     }
-                } else if (method === 'DELETE' && itemName) {
+                } else if (method === 'DELETE') {
                     responseBody = await groceryDAO.deleteItem(itemName);
                     if (!responseBody) {
                         statusCode = 404;
